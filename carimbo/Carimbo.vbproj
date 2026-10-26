@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Carimbo</RootNamespace>
+    <TargetFramework>net8.0</TargetFramework>
+    <OptionStrict>On</OptionStrict>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionInfer>On</OptionInfer>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <!-- System.Drawing is used through libgdiplus on Linux as well as on Windows. -->
+    <NoWarn>$(NoWarn);CA1416</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Spire.Pdf" Version="11.9.8" />
+    <RuntimeHostConfigurationOption Include="System.Drawing.EnableUnixSupport" Value="true" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="assets\poco-carimbo.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <Link>assets\poco-carimbo.jpg</Link>
+    </Content>
+  </ItemGroup>
+
+</Project>
