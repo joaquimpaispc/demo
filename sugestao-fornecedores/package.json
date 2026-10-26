@@ -1,0 +1,20 @@
+{
+  "name": "sugestao-fornecedores",
+  "version": "1.0.0",
+  "description": "Sugestão de fornecedores a partir do histórico de compras (HTML autónomo).",
+  "main": "src/core.js",
+  "scripts": {
+    "build": "python3 src/build.py",
+    "test": "node tests/test.js",
+    "test:ui": "node tests/ui_test.js",
+    "test:export": "node tests/dl_test.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "puppeteer-core": "^22.15.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
+  }
+}

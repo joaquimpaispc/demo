@@ -102,3 +102,7 @@ npm run build
 ```
 
 Para regenerar fixtures de demonstração (opcional), use o gerador em `scripts/generate-fixtures.mjs` se existir, ou os ficheiros já presentes em `fixtures/`.
+
+## Sugestão de Fornecedores
+
+Ferramenta autónoma (um HTML) que sugere fornecedores por linha de requisição a partir do histórico de compras. É independente desta aplicação Next.js. Instruções em [`sugestao-fornecedores/README.md`](sugestao-fornecedores/README.md).
