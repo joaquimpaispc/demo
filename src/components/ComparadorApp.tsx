@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
+import Link from "next/link";
 import { Dropzone } from "@/components/Dropzone";
 import { StepNav } from "@/components/StepNav";
 import { money, pct } from "@/lib/format";
@@ -203,7 +204,12 @@ export function ComparadorApp() {
             Cotai
           </h1>
         </div>
-        <StepNav current={step} />
+        <div className="flex flex-col items-end gap-3">
+          <StepNav current={step} />
+          <Link href="/sugestao" className="btn-ghost text-sm no-underline">
+            Sugestão 56749
+          </Link>
+        </div>
       </header>
 
       {/* Hero / upload composition */}
