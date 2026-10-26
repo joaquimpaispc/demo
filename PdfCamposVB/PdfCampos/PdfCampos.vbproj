@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <RootNamespace>PdfCampos</RootNamespace>
+    <OptionStrict>On</OptionStrict>
+    <OptionExplicit>On</OptionExplicit>
+    <OptionInfer>On</OptionInfer>
+    <!-- o pdfSweep só publica binários net461; funcionam em .NET 8 -->
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- iText Core + pdfSweep (remoção real de conteúdo). Licença AGPL ou comercial: ver README.md -->
+    <PackageReference Include="itext" Version="9.8.0" />
+    <PackageReference Include="itext.bouncy-castle-adapter" Version="9.8.0" />
+    <PackageReference Include="itext.pdfsweep" Version="5.0.8" />
+    <!-- leitura/escrita de DWG (licença MIT) -->
+    <PackageReference Include="ACadSharp" Version="3.8.30" />
+  </ItemGroup>
+</Project>
