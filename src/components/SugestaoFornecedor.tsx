@@ -40,7 +40,7 @@ export function SugestaoFornecedor() {
           </h1>
         </div>
         <Link href="/" className="btn-ghost text-sm no-underline">
-          Comparador de propostas
+          Comparador
         </Link>
       </header>
 
