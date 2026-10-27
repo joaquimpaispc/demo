@@ -24,6 +24,12 @@ diferente, ou para interpretar um pedido em linguagem natural
 
 Requisitos: .NET 8 SDK (ou Visual Studio 2022). Os pacotes NuGet são descarregados no primeiro build.
 
+## Demonstração
+
+[demo/PdfCamposVB-demo.mp4](demo/PdfCamposVB-demo.mp4) (~53 s) mostra a aplicação de consola a editar Lista, Obra, código de barras e descrição num PDF e num DWG. A consola usa a mesma biblioteca que a janela Windows Forms.
+
+Os desenhos de exemplo não estão no repositório. `demo/mk.py` espera `in.pdf` e `in.dwg` localmente (`demo/rd.py` é o auxiliar que renderiza o DWG).
+
 ## Formulário (WinForms)
 1. **Procurar...** – escolha um `.pdf` ou `.dwg`. São mostrados os valores atuais.
    Nos DWG aparecem também as descrições e a grelha da lista de peças.

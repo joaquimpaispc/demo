@@ -1,0 +1,4 @@
+# Desenhos de exemplo da demonstração (ficam só na máquina local)
+demo/**/*.pdf
+demo/**/*.dwg
+demo/**/*.dxf
