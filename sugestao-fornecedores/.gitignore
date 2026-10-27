@@ -1,0 +1,7 @@
+node_modules/
+
+# artefactos gerados pelos testes
+tests/results.json
+tests/aoa.json
+tests/dl/
+tests/*.png

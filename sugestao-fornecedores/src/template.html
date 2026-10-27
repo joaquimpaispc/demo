@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sugestão de Fornecedores</title>
+<style>
+:root{--bg:#f4f6f9;--card:#fff;--ink:#1d2533;--mut:#6b7686;--line:#e3e7ee;--pri:#1f4e79;--pri2:#2e75b6;--ok:#1e8449;--warn:#b9770e;--bad:#b03a2e;--chip:#eef3f9}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);font-size:14px}
+header{background:linear-gradient(90deg,#16365c,#1f4e79 60%,#2e75b6);color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+header h1{margin:0;font-size:21px;font-weight:600;letter-spacing:.2px}
+header .sub{opacity:.85;font-size:13px;margin-top:3px}
+main{max-width:1500px;margin:0 auto;padding:18px 22px 60px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-bottom:16px;box-shadow:0 1px 2px rgba(20,30,50,.04)}
+.card h2{font-size:15px;margin:0 0 12px;color:var(--pri)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+label.f{display:block;font-size:12px;color:var(--mut);margin-bottom:5px;font-weight:600;text-transform:uppercase;letter-spacing:.4px}
+input[type=file]{width:100%;font-size:13px;padding:7px;border:1px dashed #b8c4d6;border-radius:8px;background:#fafcff}
+input[type=date],input[type=number],select{font:inherit;padding:6px 8px;border:1px solid #c9d2df;border-radius:7px;background:#fff}
+.btn{font:inherit;font-weight:600;border:1px solid var(--pri);background:var(--pri);color:#fff;border-radius:8px;padding:8px 14px;cursor:pointer;white-space:nowrap}
+.btn:hover{background:#173d61}
+.btn.sec{background:#fff;color:var(--pri)}
+.btn.sec:hover{background:var(--chip)}
+.btn.sm{padding:5px 10px;font-size:12.5px}
+.status{font-size:13px;color:var(--mut);margin-top:10px}
+.status b{color:var(--ink)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.kpi .v{font-size:22px;font-weight:700;color:var(--pri)}
+.kpi .l{font-size:12px;color:var(--mut);margin-top:2px}
+.tabs{display:flex;gap:4px;border-bottom:2px solid var(--line);margin-bottom:14px;flex-wrap:wrap}
+.tab{padding:9px 16px;cursor:pointer;border:none;background:none;font:inherit;font-weight:600;color:var(--mut);border-bottom:3px solid transparent;margin-bottom:-2px}
+.tab.on{color:var(--pri);border-bottom-color:var(--pri2)}
+table{border-collapse:collapse;width:100%}
+th,td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+th{font-size:11.5px;text-transform:uppercase;letter-spacing:.35px;color:var(--mut);background:#f8fafc;position:sticky;top:0;z-index:1}
+td.n,th.n{text-align:right;white-space:nowrap}
+tr.main{cursor:pointer}
+tr.main:hover td{background:#f7faff}
+tr.main.open td{background:#eef4fb}
+tr.det>td{background:#fbfcfe;padding:14px 18px}
+.chip{display:inline-block;background:var(--chip);color:var(--pri);border-radius:999px;padding:2px 9px;font-size:12px;font-weight:600;margin:1px 3px 1px 0;white-space:nowrap}
+.chip.g{background:#e8f6ee;color:var(--ok)}.chip.w{background:#fdf3e1;color:var(--warn)}.chip.r{background:#fbeae8;color:var(--bad)}.chip.m{background:#eef0f3;color:#555}
+.score{display:inline-flex;align-items:center;justify-content:center;min-width:40px;height:24px;border-radius:6px;font-weight:700;font-size:12.5px;color:#fff;padding:0 6px}
+.sup{font-weight:600}
+td.sup{min-width:190px}
+.muted{color:var(--mut)}
+.small{font-size:12px}
+.alt{font-size:12px;color:var(--mut);line-height:1.5}
+.bar{display:inline-block;height:7px;border-radius:4px;background:var(--pri2);vertical-align:middle}
+.barbg{display:inline-block;width:70px;height:7px;border-radius:4px;background:#e6ebf2;vertical-align:middle;margin-right:4px;overflow:hidden}
+.comp{white-space:nowrap;font-size:11.5px;color:var(--mut)}
+tr.exc td{color:#9aa3af}
+tr.exc td .chip{opacity:.95}
+.sec-t{font-weight:700;color:var(--pri);margin:14px 0 6px;font-size:13px}
+.sgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px}
+.scard{border:1px solid var(--line);border-radius:10px;background:#fff;overflow:hidden}
+.scard .hd{padding:11px 14px;background:#f3f7fc;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:8px}
+.scard .hd .t{font-weight:700;color:var(--pri)}
+.scard .bd{padding:6px 10px 10px}
+.scard table td,.scard table th{padding:5px 6px;font-size:12.5px}
+.weights{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px 18px}
+.weights input[type=range]{width:100%}
+details summary{cursor:pointer;font-weight:600;color:var(--pri)}
+.note{background:#fffaf0;border:1px solid #f1dfb8;border-radius:8px;padding:10px 12px;font-size:12.5px;color:#7a5a12;margin-top:10px}
+.none{background:#fbeae8;border-color:#f3c7c1;color:var(--bad)}
+.legend{font-size:12px;color:var(--mut);line-height:1.6}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:10px}
+.wrap{overflow:auto}
+@media print{header .btn,.card.ctrl,.tabs{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Sugestão de Fornecedores</h1>
+    <div class="sub">Sugestões por linha de requisição com base no histórico de compras</div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap">
+    <button class="btn sec" id="bXlsx">Exportar Excel</button>
+    <button class="btn sec" id="bCsv">Exportar CSV</button>
+  </div>
+</header>
+<main>
+  <section class="card ctrl">
+    <h2>Dados</h2>
+    <div class="grid">
+      <div>
+        <label class="f">Requisição (ou ficheiro completo)</label>
+        <input type="file" id="fReq" accept=".xlsx,.xls,.xlsm,.csv">
+        <div class="small muted" style="margin-top:4px">Excel com a requisição e os blocos de histórico, ou só a requisição (Designacao, Qualidade, Dimensoes, Quantidade_Requisitada).</div>
+      </div>
+      <div>
+        <label class="f">Histórico de compras (opcional)</label>
+        <input type="file" id="fHist" accept=".xlsx,.xls,.xlsm,.csv">
+        <div class="small muted" style="margin-top:4px">Se não indicar, usa o histórico do ficheiro da requisição ou, na falta deste, o histórico embutido.</div>
+      </div>
+      <div>
+        <label class="f">Data de referência</label>
+        <input type="date" id="refDate">
+        <label class="f" style="margin-top:10px">Fornecedores por linha no pedido de cotação</label>
+        <select id="topN"><option value="1">1 (só o sugerido)</option><option value="2" selected>2 (sugerido + 1 alternativa)</option><option value="3">3</option></select>
+      </div>
+    </div>
+    <div class="status" id="status"></div>
+    <details style="margin-top:12px">
+      <summary>Critérios de pontuação (pesos)</summary>
+      <div class="weights" style="margin-top:10px" id="weights"></div>
+      <div class="legend" style="margin-top:8px">
+        <b>Como é calculada a pontuação (0–100):</b> média ponderada de 5 critérios, cada um entre 0 e 1, multiplicada pelo grau de correspondência do artigo.<br>
+        <b>Preço</b> = preço médio mais baixo entre fornecedores ÷ preço médio do fornecedor (média ponderada pela quantidade; €/kg em perfis e chapa, €/ML em tubos, €/un em varão). Sem preço válido = 0,4.
+        <b>Frequência</b> = nº de encomendas ÷ máximo da linha. <b>Recência</b> = 0,5^(dias desde a última encomenda ÷ 180).
+        <b>Prazo</b> = (prazo mais curto + 1) ÷ (prazo médio do fornecedor + 1), com prazo = data de receção − data de encomenda; sem dados = 0,5.
+        <b>Qualidade</b> = 1 se a classe de aço é igual (ex.: S275), 0,5 se diferente mas compatível, 0,75 se desconhecida; inox vs. aço carbono é excluído.<br>
+        <b>Correspondência:</b> artigo igual ×1; medida próxima (ex.: espessura diferente) ×0,85; semelhante ×0,7.
+        Ficam fora do cálculo: linhas anuladas, encomendas da própria requisição, material diferente. Ficam fora da média de preço: preços pendentes (0) e preços atípicos (&lt;60% ou &gt;180% da mediana da linha).
+      </div>
+    </details>
+  </section>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="tabs">
+    <button class="tab on" data-t="lines">Por linha</button>
+    <button class="tab" data-t="sups">Por fornecedor (pedidos de cotação)</button>
+    <button class="tab" data-t="hist">Histórico carregado</button>
+  </div>
+  <section id="t-lines" class="card"></section>
+  <section id="t-sups" style="display:none"></section>
+  <section id="t-hist" class="card" style="display:none"></section>
+</main>
+
+<script>/*__SHEETJS__*/</script>
+<script>/*__CORE__*/</script>
+<script>
+var EMBEDDED = /*__DATA__*/null;
+</script>
+<script>
+(function(){
+'use strict';
+var C = SFCore;
+var state = { req: [], hist: [], src: '', res: [], choice: {}, weights: Object.assign({}, C.DEFAULT_W) };
+var $ = function(id){ return document.getElementById(id); };
+var nf = function(v, d){ return v === null || v === undefined || isNaN(v) ? '—' : Number(v).toLocaleString('pt-PT', { minimumFractionDigits: d, maximumFractionDigits: d }); };
+var eur = function(v, d){ return v === null || v === undefined ? '—' : nf(v, d === undefined ? 2 : d) + ' €'; };
+var esc = function(s){ return String(s === null || s === undefined ? '' : s).replace(/[&<>"]/g, function(c){ return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
+var BL = { kg: '€/kg', ML: '€/ML', un: '€/un' };
+var priceDec = function(b){ return b === 'kg' ? 3 : 2; };
+function scoreColor(s){ return s >= 80 ? '#1e8449' : s >= 65 ? '#2e75b6' : s >= 50 ? '#b9770e' : '#8a94a3'; }
+function scoreBadge(s){ return '<span class="score" style="background:' + scoreColor(s) + '">' + nf(s, 0) + '</span>'; }
+
+function todayISO(){ var d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+$('refDate').value = todayISO();
+
+/* pesos */
+var WL = { preco: 'Preço', frequencia: 'Frequência', recencia: 'Recência', prazo: 'Prazo de entrega', qualidade: 'Qualidade / material' };
+$('weights').innerHTML = Object.keys(WL).map(function(k){
+  return '<div><label class="f">' + WL[k] + ': <span id="wv-' + k + '">' + state.weights[k] + '</span></label><input type="range" min="0" max="60" step="5" value="' + state.weights[k] + '" data-w="' + k + '"></div>';
+}).join('');
+$('weights').addEventListener('input', function(e){ var k = e.target.getAttribute('data-w'); if (!k) return; state.weights[k] = +e.target.value; $('wv-' + k).textContent = e.target.value; run(); });
+$('refDate').addEventListener('change', run);
+$('topN').addEventListener('change', renderSups);
+
+/* separadores */
+Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(b){
+  b.addEventListener('click', function(){
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function(x){ x.classList.toggle('on', x === b); });
+    ['lines', 'sups', 'hist'].forEach(function(t){ $('t-' + t).style.display = t === b.getAttribute('data-t') ? '' : 'none'; });
+  });
+});
+
+/* leitura de ficheiros */
+function readFile(file){
+  return new Promise(function(resolve, reject){
+    if (typeof XLSX === 'undefined') return reject(new Error('Biblioteca de leitura de Excel indisponível.'));
+    var fr = new FileReader();
+    fr.onload = function(){
+      try {
+        var wb = XLSX.read(new Uint8Array(fr.result), { type: 'array', cellDates: false });
+        resolve(wb.SheetNames.map(function(n){ return XLSX.utils.sheet_to_json(wb.Sheets[n], { header: 1, raw: true, defval: null, blankrows: true }); }));
+      } catch (e) { reject(e); }
+    };
+    fr.onerror = function(){ reject(fr.error); };
+    fr.readAsArrayBuffer(file);
+  });
+}
+var embedded = EMBEDDED ? C.parseWorkbook(EMBEDDED) : { requisition: [], history: [] };
+function load(){
+  var fr = $('fReq').files[0], fh = $('fHist').files[0];
+  Promise.all([fr ? readFile(fr) : null, fh ? readFile(fh) : null]).then(function(r){
+    var pr = r[0] ? C.parseWorkbook(r[0]) : null, ph = r[1] ? C.parseWorkbook(r[1]) : null;
+    var msg = [];
+    state.req = pr ? pr.requisition : embedded.requisition;
+    if (pr && !pr.requisition.length) msg.push('<span class="chip r">Não foi encontrada nenhuma requisição no ficheiro (procura um cabeçalho com «Designacao» e «Quantidade» ou «Quantidade_Requisitada»).</span>');
+    if (ph && ph.history.length) { state.hist = ph.history; state.src = 'ficheiro de histórico «' + esc(fh.name) + '»'; }
+    else if (pr && pr.history.length) { state.hist = pr.history; state.src = 'blocos de histórico do ficheiro «' + esc(fr.name) + '»'; }
+    else { state.hist = embedded.history; state.src = 'histórico embutido (ficheiro original de outubro de 2026)'; if (ph) msg.push('<span class="chip r">O ficheiro de histórico não tem blocos reconhecíveis (cabeçalho com «Fornecedor» e «DataEncomenda»).</span>'); }
+    state.reqSrc = pr ? '«' + esc(fr.name) + '»' : 'requisição embutida';
+    state.msg = msg.join(' ');
+    state.choice = {};
+    run();
+  }).catch(function(e){ $('status').innerHTML = '<span class="chip r">Erro ao ler o ficheiro: ' + esc(e.message) + '</span>'; });
+}
+$('fReq').addEventListener('change', load);
+$('fHist').addEventListener('change', load);
+
+function run(){
+  var rd = C.toDay($('refDate').value) || Math.floor(Date.now() / 864e5);
+  state.res = C.analyse(state.req, state.hist, { weights: state.weights, refDay: rd });
+  var nSup = {}; state.hist.forEach(function(h){ nSup[h.fornecedor] = 1; });
+  var reqN = {}; state.req.forEach(function(l){ if (l.req) reqN[l.req] = 1; });
+  $('status').innerHTML = 'Requisição: <b>' + state.reqSrc + '</b>' + (Object.keys(reqN).length ? ' (nº ' + Object.keys(reqN).join(', ') + ')' : '') + ' · <b>' + state.req.length + '</b> linhas &nbsp;|&nbsp; Histórico: <b>' + state.src + '</b> · <b>' + state.hist.length + '</b> linhas de encomenda de <b>' + Object.keys(nSup).length + '</b> fornecedores' + (state.msg ? '<div style="margin-top:6px">' + state.msg + '</div>' : '');
+  renderKpis(); renderLines(); renderSups(); renderHist();
+}
+function chosen(r, i){ var c = state.choice[i]; if (c) { for (var k = 0; k < r.suppliers.length; k++) if (r.suppliers[k].fornecedor === c) return r.suppliers[k]; } return r.top; }
+function lineEstimate(r, s){ return s && s.avgPrice !== null && r.qtyBasis ? s.avgPrice * r.qtyBasis : null; }
+
+function renderKpis(){
+  var withS = state.res.filter(function(r){ return r.top; }).length;
+  var sups = {}, tot = 0, anyEst = false;
+  state.res.forEach(function(r, i){ var s = chosen(r, i); if (s) { sups[s.fornecedor] = 1; var e = lineEstimate(r, s); if (e !== null) { tot += e; anyEst = true; } } });
+  var k = [
+    [state.res.length, 'Linhas na requisição'],
+    [withS, 'Linhas com sugestão'],
+    [state.res.length - withS, 'Linhas sem histórico'],
+    [Object.keys(sups).length, 'Fornecedores sugeridos'],
+    [anyEst ? eur(tot, 0) : '—', 'Valor estimado (preço médio histórico)']
+  ];
+  $('kpis').innerHTML = k.map(function(x){ return '<div class="kpi"><div class="v">' + x[0] + '</div><div class="l">' + x[1] + '</div></div>'; }).join('');
+}
+
+function qtyTxt(l){ return nf(l.quantidade, l.quantidade % 1 ? 2 : 0) + ' ' + esc(l.unidade || ''); }
+function renderLines(){
+  var h = '<div class="toolbar"><div class="muted small">Clique numa linha para ver a pontuação de cada fornecedor e o histórico de encomendas.</div>' +
+    '<div><button class="btn sec sm" id="bExpAll">Expandir tudo</button> <button class="btn sec sm" id="bColAll">Recolher tudo</button></div></div>';
+  h += '<div class="wrap"><table><thead><tr><th>Lin.</th><th>Designação</th><th>Qualidade</th><th>Dimensões</th><th class="n">Qtd.</th><th>Fornecedor sugerido</th><th>Alternativas</th>' +
+    '<th class="n">Último preço</th><th class="n">Preço médio</th><th class="n">Últ. encomenda</th><th class="n">Nº enc.</th><th class="n">Prazo médio</th><th class="n">Valor est.</th></tr></thead><tbody>';
+  state.res.forEach(function(r, i){
+    var l = r.line, s = chosen(r, i), b = BL[r.basis], d = priceDec(r.basis);
+    var alts = r.suppliers.filter(function(x){ return x !== s; }).slice(0, 3).map(function(x){ return esc(x.fornecedor) + ' <span class="muted">(' + nf(x.score, 0) + ')</span>'; }).join('<br>');
+    h += '<tr class="main" data-i="' + i + '"><td>' + esc(l.linha) + '</td><td><b>' + esc(l.designacao) + '</b><div class="small muted">' + esc(r.key.replace(/^TXT:/, '')) + '</div></td><td>' + esc(l.qualidade) + '</td><td>' + esc(l.dimensoes) + '</td><td class="n">' + qtyTxt(l) + '</td>';
+    if (s) {
+      h += '<td>' + scoreBadge(s.score) + ' <span class="sup">' + esc(s.fornecedor) + '</span>' + (state.choice[i] ? ' <span class="chip w">escolha manual</span>' : '') + (s.matchFactor < 1 ? ' <span class="chip w">' + s.matchLabel + '</span>' : '') + '</td><td class="alt">' + (alts || '<span class="muted">—</span>') + '</td>' +
+        '<td class="n">' + (s.lastPrice !== null ? eur(s.lastPrice, d) + '<div class="small muted">' + b + ' · ' + C.dayToPT(s.lastPriceDay) + '</div>' : '—') + '</td>' +
+        '<td class="n">' + (s.avgPrice !== null ? eur(s.avgPrice, d) + '<div class="small muted">' + b + ' · ' + s.nPriced + ' preço(s)</div>' : '—') + '</td>' +
+        '<td class="n">' + C.dayToPT(s.lastDay) + '</td><td class="n">' + s.nOrders + '</td><td class="n">' + (s.leadAvg !== null ? nf(s.leadAvg, 1) + ' d' : '—') + '</td><td class="n">' + eur(lineEstimate(r, s), 0) + '</td>';
+    } else {
+      h += '<td colspan="8"><span class="chip r">Sem histórico de compras para este artigo</span>' + (r.notes.length ? ' <span class="chip w">só existe a encomenda desta requisição</span>' : '') + '</td>';
+    }
+    h += '</tr><tr class="det" id="det-' + i + '" style="display:none"><td colspan="13"></td></tr>';
+  });
+  h += '</tbody></table></div>';
+  $('t-lines').innerHTML = h;
+  Array.prototype.forEach.call(document.querySelectorAll('tr.main'), function(tr){ tr.addEventListener('click', function(){ toggle(+tr.getAttribute('data-i')); }); });
+  $('bExpAll').onclick = function(){ state.res.forEach(function(_, i){ toggle(i, true); }); };
+  $('bColAll').onclick = function(){ state.res.forEach(function(_, i){ toggle(i, false); }); };
+}
+function toggle(i, force){
+  var det = $('det-' + i), tr = document.querySelector('tr.main[data-i="' + i + '"]');
+  var open = force === undefined ? det.style.display === 'none' : force;
+  if (open && !det.getAttribute('data-r')) { det.firstChild.innerHTML = detail(i); det.setAttribute('data-r', '1'); bindDetail(i); }
+  det.style.display = open ? '' : 'none'; tr.classList.toggle('open', open);
+}
+function compBar(v){ return '<span class="barbg"><span class="bar" style="width:' + Math.round(v * 100) + '%"></span></span>' + nf(v, 2); }
+function detail(i){
+  var r = state.res[i], b = BL[r.basis], d = priceDec(r.basis), s0 = chosen(r, i);
+  var h = '';
+  if (r.suppliers.length) {
+    h += '<div class="sec-t">Ranking de fornecedores <span class="muted small" style="font-weight:400">(comparação em ' + b + (r.median !== null ? '; mediana da linha ' + eur(r.median, d) : '') + ')</span></div>';
+    h += '<div class="wrap"><table><thead><tr><th>Escolher</th><th>Fornecedor</th><th class="n">Pontuação</th><th class="n">Nº enc.</th><th class="n">Últ. encomenda</th><th class="n">Último preço</th><th class="n">Preço médio</th><th class="n">Preço mín.</th><th class="n">Prazo médio</th><th>Correspondência</th><th>Preço</th><th>Frequência</th><th>Recência</th><th>Prazo</th><th>Qualidade</th></tr></thead><tbody>';
+    r.suppliers.forEach(function(s){
+      var c = s.components;
+      h += '<tr><td><input type="radio" name="ch-' + i + '" value="' + esc(s.fornecedor) + '"' + (s === s0 ? ' checked' : '') + '></td><td class="sup">' + esc(s.fornecedor) + '</td><td class="n">' + scoreBadge(s.score) + '</td><td class="n">' + s.nOrders + '</td><td class="n">' + C.dayToPT(s.lastDay) + '</td>' +
+        '<td class="n">' + (s.lastPrice !== null ? eur(s.lastPrice, d) + (s.lastPriceUnit !== null && r.basis === 'kg' ? '<div class="small muted">' + eur(s.lastPriceUnit, 2) + '/' + esc(s.lastPriceUnitLabel) + '</div>' : '') : '—') + '</td>' +
+        '<td class="n">' + eur(s.avgPrice, d) + '</td><td class="n">' + eur(s.minPrice, d) + '</td><td class="n">' + (s.leadAvg !== null ? nf(s.leadAvg, 1) + ' d' : '—') + '</td><td><span class="chip ' + (s.matchFactor === 1 ? 'g' : 'w') + '">' + s.matchLabel + '</span></td>' +
+        ['preco', 'frequencia', 'recencia', 'prazo', 'qualidade'].map(function(k){ return '<td class="comp">' + compBar(c[k]) + '</td>'; }).join('') + '</tr>';
+    });
+    h += '</tbody></table></div>';
+  } else {
+    h += '<div class="note none">Não há encomendas anteriores válidas para este artigo (procurado por ligação à linha, por código de artigo e por designação normalizada «' + esc(r.key.replace(/^TXT:/, '')) + '»). Sugestão: pedir cotação aos fornecedores habituais da mesma família de artigos.</div>';
+  }
+  h += '<div class="sec-t">Histórico de encomendas encontrado (' + r.rows.length + ')</div>';
+  if (r.rows.length) {
+    h += '<div class="wrap"><table><thead><tr><th>Data enc.</th><th>Fornecedor</th><th>Nº enc.</th><th>Req.</th><th>Designação</th><th>Qualidade</th><th class="n">Qtd.</th><th class="n">Peso un.</th><th class="n">Preço un. líq.</th><th class="n">' + b + '</th><th class="n">Desc.</th><th class="n">Tabela</th><th class="n">Receção</th><th class="n">Prazo</th><th>Encontrado por</th><th>Observações</th></tr></thead><tbody>';
+    r.rows.forEach(function(x){
+      var hh = x.h, fl = x.flags.map(function(f){ return '<span class="chip ' + (/anulada|diferente|desta/.test(f) ? 'r' : 'w') + '">' + esc(f) + '</span>'; }).join('');
+      if (x.priceOk) fl = '<span class="chip g">usado na média</span>' + fl;
+      h += '<tr class="' + (x.excluded ? 'exc' : '') + '"><td>' + C.dayToPT(hh.data) + '</td><td>' + esc(hh.fornecedor) + '</td><td>' + esc(hh.encomenda) + '</td><td>' + esc(hh.req) + '</td><td>' + esc(hh.designacao) + '</td><td>' + esc(hh.qualidade) + '</td>' +
+        '<td class="n">' + nf(hh.quantidade, hh.quantidade % 1 ? 2 : 0) + ' ' + esc(hh.unidade) + '</td><td class="n">' + nf(hh.pesoUnit, 2) + '</td>' +
+        '<td class="n">' + (x.price !== null ? eur(x.price, 2) : (x.estimated !== null ? '<span class="muted">≈ ' + eur(x.estimated, 2) + '</span>' : '—')) + '</td>' +
+        '<td class="n">' + (x.cmp !== null ? eur(x.cmp, d) : (x.cmpEst !== null ? '<span class="muted">≈ ' + eur(x.cmpEst, d) + '</span>' : '—')) + '</td>' +
+        '<td class="n">' + (hh.desconto ? nf(hh.desconto, 1) + '%' : '') + '</td><td class="n">' + (hh.tabelaMin !== null ? nf(hh.tabelaMin, 2) : '') + '</td>' +
+        '<td class="n">' + C.dayToPT(hh.recepcao) + '</td><td class="n">' + (x.lead !== null ? x.lead + ' d' : '') + '</td><td class="small">' + x.how.join(', ') + ' · ' + esc(x.key.replace(/^TXT:/, '')) + '</td><td>' + fl + '</td></tr>';
+    });
+    h += '</tbody></table></div><div class="legend" style="margin-top:6px">≈ preço estimado a partir do preço de tabela (encomenda ainda sem preço final) – não entra na média. Linhas a cinzento não contam para a pontuação.</div>';
+  }
+  return h;
+}
+function bindDetail(i){
+  Array.prototype.forEach.call(document.querySelectorAll('input[name="ch-' + i + '"]'), function(rb){
+    rb.addEventListener('change', function(){
+      var r = state.res[i];
+      if (r.top && rb.value === r.top.fornecedor) delete state.choice[i]; else state.choice[i] = rb.value;
+      var open = []; state.res.forEach(function(_, k){ if ($('det-' + k).style.display !== 'none') open.push(k); });
+      renderKpis(); renderLines(); renderSups(); open.forEach(function(k){ toggle(k, true); });
+    });
+  });
+}
+
+/* agrupamento por fornecedor */
+function groups(){
+  var n = +$('topN').value, g = {};
+  state.res.forEach(function(r, i){
+    var s0 = chosen(r, i); if (!s0) return;
+    var list = [s0].concat(r.suppliers.filter(function(x){ return x !== s0; })).slice(0, n);
+    list.forEach(function(s, rank){
+      var e = g[s.fornecedor] || (g[s.fornecedor] = { fornecedor: s.fornecedor, items: [], kg: 0, val: 0, nTop: 0 });
+      e.items.push({ r: r, s: s, rank: rank, est: lineEstimate(r, s) });
+      if (rank === 0) { e.nTop++; if (r.line.pesoTotal) e.kg += r.line.pesoTotal; var v = lineEstimate(r, s); if (v) e.val += v; }
+    });
+  });
+  return Object.keys(g).map(function(k){ return g[k]; }).sort(function(a, b){ return b.nTop - a.nTop || b.items.length - a.items.length; });
+}
+function rfqText(gr){
+  var reqs = {}; gr.items.forEach(function(it){ if (it.r.line.req) reqs[it.r.line.req] = 1; });
+  var t = 'Assunto: Pedido de cotação' + (Object.keys(reqs).length ? ' – Requisição ' + Object.keys(reqs).join(', ') : '') + '\n\nBom dia,\n\nSolicitamos a vossa melhor cotação e prazo de entrega para o seguinte material:\n\n';
+  gr.items.forEach(function(it, k){ var l = it.r.line; t += (k + 1) + '. ' + l.designacao + (l.qualidade ? ' – ' + l.qualidade : '') + (l.dimensoes ? ' – ' + l.dimensoes : '') + ' – Qtd.: ' + (l.quantidade !== null ? l.quantidade : '') + ' ' + (l.unidade || '') + (l.certificado ? ' – Certificado ' + l.certificado : '') + '\n'; });
+  return t + '\nCom os melhores cumprimentos,\n';
+}
+function renderSups(){
+  var gs = groups(), h = '<div class="card"><div class="toolbar"><div class="muted small">Linhas agrupadas por fornecedor para enviar um único pedido de cotação a cada um. «Sugerido» = 1.ª opção; «Alternativa» = incluído porque escolheu ' + $('topN').value + ' fornecedor(es) por linha.</div><div><button class="btn sec sm" id="bRfqAll">Exportar pedidos (Excel)</button></div></div></div>';
+  if (!gs.length) { $('t-sups').innerHTML = h + '<div class="card muted">Sem sugestões.</div>'; return; }
+  h += '<div class="sgrid">';
+  gs.forEach(function(g, gi){
+    h += '<div class="scard"><div class="hd"><div><div class="t">' + esc(g.fornecedor) + '</div><div class="small muted">' + g.nTop + ' linha(s) como sugerido · ' + (g.items.length - g.nTop) + ' como alternativa' + (g.val ? ' · valor est. (sugeridas) ' + eur(g.val, 0) : '') + '</div></div><button class="btn sec sm" data-copy="' + gi + '">Copiar pedido</button></div><div class="bd"><table><thead><tr><th>Lin.</th><th>Designação</th><th>Qualidade</th><th class="n">Qtd.</th><th class="n">Último preço</th><th></th></tr></thead><tbody>';
+    g.items.forEach(function(it){
+      var l = it.r.line, d = priceDec(it.r.basis);
+      h += '<tr><td>' + esc(l.linha) + '</td><td>' + esc(l.designacao) + ' <span class="muted small">' + esc(l.dimensoes) + '</span></td><td>' + esc(l.qualidade) + '</td><td class="n">' + qtyTxt(l) + '</td><td class="n">' + (it.s.lastPrice !== null ? eur(it.s.lastPrice, d) + ' <span class="muted small">' + BL[it.r.basis] + '</span>' : '—') + '</td><td>' + (it.rank === 0 ? '<span class="chip g">Sugerido</span>' : '<span class="chip m">Alternativa</span>') + '</td></tr>';
+    });
+    h += '</tbody></table></div></div>';
+  });
+  h += '</div>';
+  var none = state.res.filter(function(r){ return !r.top; });
+  if (none.length) h += '<div class="card note none" style="margin-top:14px"><b>Linhas sem histórico (escolher fornecedor manualmente):</b> ' + none.map(function(r){ return esc(r.line.linha + ' – ' + r.line.designacao); }).join('; ') + '</div>';
+  $('t-sups').innerHTML = h;
+  Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function(b){
+    b.addEventListener('click', function(){
+      var txt = rfqText(gs[+b.getAttribute('data-copy')]);
+      var done = function(){ b.textContent = 'Copiado ✓'; setTimeout(function(){ b.textContent = 'Copiar pedido'; }, 1600); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(done, function(){ prompt('Copie o texto:', txt); });
+      else prompt('Copie o texto:', txt);
+    });
+  });
+  $('bRfqAll').onclick = function(){ exportXlsx(true); };
+}
+function renderHist(){
+  var rows = state.hist.slice().sort(function(a, b){ return (b.data || 0) - (a.data || 0); });
+  var h = '<div class="muted small" style="margin-bottom:8px">' + rows.length + ' linhas de encomenda (sem duplicados). Para usar outro histórico, carregue um ficheiro no topo.</div><div class="wrap" style="max-height:640px"><table><thead><tr><th>Data enc.</th><th>Fornecedor</th><th>Nº enc.</th><th>Req.</th><th>Designação</th><th>Qualidade</th><th class="n">Qtd.</th><th class="n">Peso un.</th><th class="n">Preço un.</th><th class="n">Desc.</th><th class="n">Total</th><th class="n">Receção</th><th>Estado</th></tr></thead><tbody>';
+  rows.forEach(function(x){
+    h += '<tr><td>' + C.dayToPT(x.data) + '</td><td>' + esc(x.fornecedor) + '</td><td>' + esc(x.encomenda) + '</td><td>' + esc(x.req) + '</td><td>' + esc(x.designacao) + '</td><td>' + esc(x.qualidade) + '</td><td class="n">' + nf(x.quantidade, x.quantidade % 1 ? 2 : 0) + ' ' + esc(x.unidade) + '</td><td class="n">' + nf(x.pesoUnit, 2) + '</td><td class="n">' + eur(x.precoUnit, 2) + '</td><td class="n">' + (x.desconto ? nf(x.desconto, 1) + '%' : '') + '</td><td class="n">' + eur(x.precoTotal, 2) + '</td><td class="n">' + C.dayToPT(x.recepcao) + '</td><td>' + (x.anulada ? '<span class="chip r">anulada</span>' : x.recebido === 1 ? '<span class="chip g">recebido</span>' : '<span class="chip m">pendente</span>') + '</td></tr>';
+  });
+  $('t-hist').innerHTML = h + '</tbody></table></div>';
+}
+
+/* exportação */
+function suggestionRows(){
+  return state.res.map(function(r, i){
+    var s = chosen(r, i), alts = r.suppliers.filter(function(x){ return x !== s; });
+    return {
+      'Linha': r.line.linha, 'Auto_ID': r.line.id, 'Requisição': r.line.req, 'Designação': r.line.designacao, 'Qualidade': r.line.qualidade, 'Dimensões': r.line.dimensoes,
+      'Quantidade': r.line.quantidade, 'Unidade': r.line.unidade, 'Peso total (kg)': r.line.pesoTotal, 'Artigo normalizado': r.key.replace(/^TXT:/, ''),
+      'Fornecedor sugerido': s ? s.fornecedor : 'SEM HISTÓRICO', 'Escolha manual': state.choice[i] ? 'Sim' : '', 'Pontuação': s ? s.score : null, 'Correspondência': s ? s.matchLabel : '',
+      'Base de preço': BL[r.basis], 'Último preço': s ? s.lastPrice : null, 'Data último preço': s ? C.dayToISO(s.lastPriceDay) : '', 'Preço médio': s ? s.avgPrice : null, 'Preço mínimo': s ? s.minPrice : null,
+      'Última encomenda': s ? C.dayToISO(s.lastDay) : '', 'Nº encomendas': s ? s.nOrders : null, 'Prazo médio (dias)': s && s.leadAvg !== null ? Math.round(s.leadAvg * 10) / 10 : null,
+      'Valor estimado (€)': s ? (lineEstimate(r, s) !== null ? Math.round(lineEstimate(r, s) * 100) / 100 : null) : null,
+      'Alternativa 1': alts[0] ? alts[0].fornecedor + ' (' + alts[0].score + ')' : '', 'Alternativa 2': alts[1] ? alts[1].fornecedor + ' (' + alts[1].score + ')' : '', 'Alternativa 3': alts[2] ? alts[2].fornecedor + ' (' + alts[2].score + ')' : '',
+      'Notas': r.notes.length ? 'Já existe encomenda nesta requisição: ' + r.notes.map(function(x){ return x.h.fornecedor + ' enc. ' + x.h.encomenda + ' de ' + C.dayToISO(x.h.data); }).join('; ') : ''
+    };
+  });
+}
+function exportXlsx(onlyRfq){
+  if (typeof XLSX === 'undefined') { alert('Biblioteca de Excel indisponível; use Exportar CSV.'); return; }
+  var wb = XLSX.utils.book_new();
+  var add = function(name, rows){ var ws = XLSX.utils.json_to_sheet(rows); var keys = rows.length ? Object.keys(rows[0]) : []; ws['!cols'] = keys.map(function(k){ var m = k.length; rows.forEach(function(r){ var v = r[k]; m = Math.max(m, v === null || v === undefined ? 0 : String(v).length); }); return { wch: Math.min(60, m + 2) }; }); XLSX.utils.book_append_sheet(wb, ws, name); };
+  if (!onlyRfq) add('Sugestões', suggestionRows());
+  var pr = [];
+  groups().forEach(function(g){ g.items.forEach(function(it){ var l = it.r.line; pr.push({ 'Fornecedor': g.fornecedor, 'Tipo': it.rank === 0 ? 'Sugerido' : 'Alternativa', 'Linha': l.linha, 'Designação': l.designacao, 'Qualidade': l.qualidade, 'Dimensões': l.dimensoes, 'Quantidade': l.quantidade, 'Unidade': l.unidade, 'Certificado': l.certificado, 'Último preço': it.s.lastPrice, 'Base de preço': BL[it.r.basis], 'Pontuação': it.s.score }); }); });
+  add('Pedidos de cotação', pr);
+  if (!onlyRfq) {
+    var rk = [];
+    state.res.forEach(function(r){ r.suppliers.forEach(function(s, k){ rk.push({ 'Linha': r.line.linha, 'Designação': r.line.designacao, 'Posição': k + 1, 'Fornecedor': s.fornecedor, 'Pontuação': s.score, 'Nº encomendas': s.nOrders, 'Última encomenda': C.dayToISO(s.lastDay), 'Base de preço': BL[r.basis], 'Último preço': s.lastPrice, 'Preço médio': s.avgPrice, 'Preço mínimo': s.minPrice, 'Prazo médio (dias)': s.leadAvg !== null ? Math.round(s.leadAvg * 10) / 10 : null, 'Correspondência': s.matchLabel, 'C. Preço': +s.components.preco.toFixed(3), 'C. Frequência': +s.components.frequencia.toFixed(3), 'C. Recência': +s.components.recencia.toFixed(3), 'C. Prazo': +s.components.prazo.toFixed(3), 'C. Qualidade': +s.components.qualidade.toFixed(3) }); }); });
+    add('Ranking completo', rk);
+    var hs = [];
+    state.res.forEach(function(r){ r.rows.forEach(function(x){ var h = x.h; hs.push({ 'Linha req.': r.line.linha, 'Designação req.': r.line.designacao, 'Fornecedor': h.fornecedor, 'Data encomenda': C.dayToISO(h.data), 'Nº encomenda': h.encomenda, 'Requisição': h.req, 'Designação': h.designacao, 'Qualidade': h.qualidade, 'Quantidade': h.quantidade, 'Unidade': h.unidade, 'Peso unitário': h.pesoUnit, 'Preço unitário líquido': x.price, 'Preço estimado (pendente)': x.estimated, ['Preço comparável (' + BL[r.basis] + ')']: x.cmp, 'Data receção': C.dayToISO(h.recepcao), 'Prazo (dias)': x.lead, 'Encontrado por': x.how.join(', '), 'Conta para pontuação': x.excluded ? 'Não' : 'Sim', 'Usado na média de preço': x.priceOk ? 'Sim' : 'Não', 'Observações': x.flags.join('; ') }); }); });
+    add('Histórico usado', hs);
+  }
+  var reqs = {}; state.req.forEach(function(l){ if (l.req) reqs[l.req] = 1; });
+  XLSX.writeFile(wb, (onlyRfq ? 'pedidos_cotacao' : 'sugestoes_fornecedores') + (Object.keys(reqs).length ? '_req' + Object.keys(reqs).join('_') : '') + '.xlsx');
+}
+function exportCsv(){
+  var rows = suggestionRows(); if (!rows.length) return;
+  var keys = Object.keys(rows[0]);
+  var cell = function(v){ if (v === null || v === undefined) return ''; if (typeof v === 'number') return String(v).replace('.', ','); var s = String(v); return /[;"\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
+  var csv = '\ufeff' + keys.join(';') + '\n' + rows.map(function(r){ return keys.map(function(k){ return cell(r[k]); }).join(';'); }).join('\n');
+  var a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = 'sugestoes_fornecedores.csv'; document.body.appendChild(a); a.click(); a.remove();
+}
+$('bXlsx').onclick = function(){ exportXlsx(false); };
+$('bCsv').onclick = exportCsv;
+
+state.req = embedded.requisition; state.hist = embedded.history; state.src = 'histórico embutido (ficheiro original de outubro de 2026)'; state.reqSrc = 'requisição embutida'; state.msg = '';
+if (typeof XLSX === 'undefined') state.msg = '<span class="chip w">Biblioteca de Excel não carregada: só os dados embutidos e a exportação CSV estão disponíveis.</span>';
+run();
+})();
+</script>
+</body>
+</html>
