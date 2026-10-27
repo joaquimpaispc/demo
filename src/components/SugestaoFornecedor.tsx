@@ -40,7 +40,7 @@ export function SugestaoFornecedor() {
           </h1>
         </div>
         <Link href="/" className="btn-ghost text-sm no-underline">
-          Comparador de propostas
+          Comparador
         </Link>
       </header>
 
@@ -70,7 +70,7 @@ export function SugestaoFornecedor() {
 
       <section className="mt-10 grid gap-4 sm:grid-cols-3">
         <article className="border-t border-[var(--lime)] pt-4">
-          <p className="text-xs uppercase tracking-[0.16em] text-[var(--mist)]">
+          <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--mist)]">
             Já na encomenda {SUGESTAO.encomenda}
           </p>
           <p className="font-display mt-2 text-3xl tracking-tight text-[var(--lime)]">
