@@ -1,17 +1,11 @@
 import type { Metadata } from "next";
-import { Sora, Syne } from "next/font/google";
+import { Source_Sans_3 } from "next/font/google";
 import "./globals.css";
 
-const sora = Sora({
-  variable: "--font-sora",
+const sourceSans = Source_Sans_3({
+  variable: "--font-app",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600", "700"],
-});
-
-const syne = Syne({
-  variable: "--font-syne",
-  subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["400", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -27,9 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt">
-      <body className={`${sora.variable} ${syne.variable} antialiased`}>
-        {children}
-      </body>
+      <body className={`${sourceSans.variable} antialiased`}>{children}</body>
     </html>
   );
 }
