@@ -31,9 +31,9 @@ export function Dropzone({
 
   return (
     <label
-      className={`dropzone block cursor-pointer rounded-2xl px-6 py-10 text-center ${
-        active ? "is-active" : ""
-      } ${disabled ? "pointer-events-none opacity-50" : ""}`}
+      className={`dropzone block ${active ? "is-active" : ""} ${
+        disabled ? "pointer-events-none opacity-50" : ""
+      }`}
       onDragEnter={(e) => {
         e.preventDefault();
         setActive(true);
@@ -57,10 +57,10 @@ export function Dropzone({
         disabled={disabled}
         onChange={(e) => handleFiles(e.target.files)}
       />
-      <p className="font-display text-xl tracking-tight text-[var(--foam)]">
-        {label}
+      <p>
+        <strong>{label}</strong>
       </p>
-      <p className="mt-2 text-sm text-[var(--mist)]">{hint}</p>
+      <p className="hint">{hint}</p>
     </label>
   );
 }
