@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <!-- permite compilar também fora do Windows (ex.: CI em Linux) -->
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <RootNamespace>PdfCampos.WinForms</RootNamespace>
+    <StartupObject>PdfCampos.WinForms.Program</StartupObject>
+    <MyType>WindowsFormsWithCustomSubMain</MyType>
+    <OptionStrict>On</OptionStrict>
+    <NoWarn>$(NoWarn);NU1701</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PdfCampos\PdfCampos.vbproj" />
+  </ItemGroup>
+</Project>
